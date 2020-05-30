@@ -14,16 +14,13 @@ export default class App extends Component {
    }
  
   }
-  Hide_Splash_Screen=()=>{
-    this.setState({ 
-        isVisible : false 
-    });
-  }
-  componentDidMount(){
+  
+  UNSAFE_componentWillMount(){
     var that = this;
     setTimeout(function(){
-      that.Hide_Splash_Screen();
-    }, 5000);
+      that.setState({ 
+        isVisible : false 
+    })}, 5000);
   }
   render() {
     if (this.state.isVisible === true) {
