@@ -10,8 +10,11 @@ import LoginScreen from '../Screens/LoginScreen' ;
 import Listen from '../Screens/Listen' ;
 import Forget from '../Screens/Forget' ;
 import Share from '../Screens/Share' ;
+import Music_List from '../Screens/Music_List' ;
 import Logout from '../Screens/Logout' ;
+import All_Music from '../Screens/All_Music' ;
 import Song from '../Screens/Song' ;
+import Songers from '../Screens/Songers' ;
 import Favourites from '../Screens/Favourites' ;
 import Language from '../Screens/Language' ;
 import Library from '../Screens/Library' ;
@@ -20,6 +23,7 @@ import Podcast from '../Screens/Podcast' ;
 import PodcastScreen from '../Screens/PodcastScreen' ;
 import { View , Image , Text , Dimensions } from 'react-native';
 import Menu from './Menu';
+import ArcMenu from './ArcMenu';
 
 
 const Navigator = createStackNavigator({
@@ -36,7 +40,11 @@ const Navigator = createStackNavigator({
     HomeScreen : {
         screen :  HomeScreen ,
      },
-   
+     All_Music :
+     {
+         screen : All_Music
+     },
+     
     RegisterScreen : 
     {
         screen : RegisterScreen
@@ -57,10 +65,22 @@ const Navigator = createStackNavigator({
     {
         screen : PodcastScreen ,
     },  
+    Songers : 
+    {
+        screen : Songers , navigationOptions : {
+            header : null
+        }
+    },
     Forget : 
     {
         screen : Forget ,
     },  
+    Music_List :
+    {
+      screen :  Music_List , navigationOptions : {
+        header : null
+      }
+    },
      Logout : 
      {
          screen : Logout
@@ -75,7 +95,8 @@ const Navigator = createStackNavigator({
     },
     Library : 
     {
-        screen : Library
+        screen : Library , navigationOptions : {
+            header : null}
     },
    
     Podcast : 
@@ -93,67 +114,13 @@ const Navigator = createStackNavigator({
   
 });
 
-/*
-const BottomTabNavigator = createBottomTabNavigator({
-    Home : { screen : Navigator ,  navigationOptions : 
-        { 
-             tabBarIcon : ( (tabInfo) =>{ return (
-                <Icon name="home" type = "Entypo" style={{color: tabInfo.tintColor}}   />
-               )})
-        },
-         tabBarColor : Colors.headerColor , 
-    },
-    Live : 
-    {
-        screen : Live  , navigationOptions : 
-        {
-             tabBarIcon : ( (tabInfo) =>{ return (
-                <Icon name="livestream" type = "Fontisto" style={{color: tabInfo.tintColor}}   />
-               )})
-        },
-         tabBarColor : Colors.accentColor , 
-    },
-  
-    Favourites : 
-    {
-        screen : Favourites  , navigationOptions : 
-        {
-             tabBarIcon : ( (tabInfo) =>{ return (
-                <Icon name="favorite" type = "MaterialIcons" style={{color: tabInfo.tintColor ,}}   />
-               )}), 
-        },
-         tabBarColor : Colors.accentColor , 
-    },
-  
-    Recent : 
-    {
-        screen : Recent  , navigationOptions : 
-        {
-             tabBarIcon : ( (tabInfo) =>{ return (
-                <Icon name="folder-open" type = "FontAwesome" style={{color: tabInfo.tintColor}}   />
-               )})
-        },
-         tabBarColor : Colors.accentColor , 
-    },
-    
-} , {
-   
-  tabBarOptions: {
-    style: { backgroundColor: "black"  , borderTopColor : 'black'  },
-    
-    showIcon: true,
-    gesturesEnabled: true,
-    inactiveTintColor: 'grey',
-    activeTintColor: Colors.tapcolor}
-});
-
-*/
-
 const MainVavigator  = createDrawerNavigator({
    
     
     Background : {
-        screen : Navigator  ,  navigationOptions : {
+        screen : Navigator  ,  
+        
+        navigationOptions : {
             drawerLabel : 'Main Menu'  ,  drawerIcon :  <View>
               
                 </View>
@@ -161,7 +128,7 @@ const MainVavigator  = createDrawerNavigator({
    
     
 } , {
-    contentComponent: Menu,
+    contentComponent:  Menu    ,
     backBehavior : "initialRoute" , drawerType : "slide"  , drawerPosition : 'left'  ,
     drawerWidth: Dimensions.get('window').width - 130, statusBarAnimation : "fade" ,  
  

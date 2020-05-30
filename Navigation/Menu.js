@@ -4,6 +4,8 @@ import { View , StyleSheet , Platform  , Text  , ImageBackground  ,  Linking , N
 import  Colors from '../constant/color'; 
 import { Icon } from 'native-base' ;
 import {  getLanguages } from 'react-native-i18n';
+import { withNavigation } from 'react-navigation';
+
 const  urlsite  = 'http://yaboos.fm/';
 let phoneNumber = '25723333';
 
@@ -28,7 +30,7 @@ class Menu extends Component {
 
   componentWillMount ()
     {
-      getLanguages().then(languages => {
+     getLanguages().then(languages => {
      // alert(languages) // ['en-US', 'en']
       this.setState({
         locale : languages ,
@@ -47,10 +49,12 @@ class Menu extends Component {
           arrow : 'arrow-left'
         })
       }
-      const  param1 = 'param1'
-      const  param2 = 'param2'
-   
- switch ( param1 || param2 ) {
+      
+      const  param1  = this.props.navigation.state.param1  ;
+      const  param2  = this.props.navigation.state.params ;
+     // alert( "hegazy : " + param2 )
+    
+      switch ( param1 || param2 ) {
        case param1 :
         this.setState({
      record : 'تسجيل صوتي' ,
@@ -300,7 +304,7 @@ const styles = StyleSheet.create({
    });
    
    
-export default Menu ;
+export default  withNavigation( Menu) ;
 
 /**
  * 
