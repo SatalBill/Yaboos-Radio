@@ -1,18 +1,17 @@
 
 import React   ,  { useEffect , useState , useCallback  , useNavigation }  from 'react';
-import { StyleSheet,View,Text,Platform, ToastAndroid, Alert , Image , ImageBackground , ScrollView , Animated ,
-    BackHandler,  RefreshControl  , I18nManager , NativeModules } from 'react-native';
+import { StyleSheet,View,Text,Platform, ToastAndroid,   Modal  , Image , ImageBackground , ScrollView , Animated ,
+    BackHandler,  RefreshControl  , I18nManager , NativeModules , Linking } from 'react-native';
 import { Icon , Tab, Tabs ,TabHeading   } from 'native-base';
 import  Colors  from '../constant/color';
-import TrackPlayer from 'react-native-track-player';
+import TrackPlayer , { ProgressComponent } from 'react-native-track-player';
 import firebase from '../Navigation/Config';
 import { SliderBox } from "react-native-image-slider-box";
 import Share from 'react-native-share';
 import { LoginButton ,  LoginManager } from 'react-native-fbsdk';
-import Library from './Library';
 import Sound from 'react-native-sound';
 import Orientation from 'react-native-orientation-locker';
-
+import { DrawerActions } from 'react-navigation-drawer';
 
 Sound.setCategory('Playback', true); // true = mixWithOthers
 
@@ -24,7 +23,8 @@ function wait(timeout) {
 }
 const HomeScreen = ({navigation}) =>
 {
- 
+  
+const [modalVisible, setModalVisible] = useState(true);
 const [refreshing, setRefreshing] = React.useState(false);
 const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -52,11 +52,11 @@ const spin = LoadingSpin.interpolate({
   outputRange : [ '0deg' , outputRange ]
 });
 
-const images = [{uri: 'http://demo.ezicodes.com:8080/images/Img/Banner.jpg'},  
-{uri: 'http://demo.ezicodes.com:8080/images/Img/Bannertwo.jpg'},
-{uri: 'http://demo.ezicodes.com:8080/images/Img/Bannerone.jpg'}
-];
 const [menu , ismenu ] =  useState('')
+const [data_response , isdata_response ] =  useState('')
+const [image , isimages ] =  useState([{uri: ''},  
+{uri: ''}, 
+{uri: ''},])
 const [list , islist ] =  useState('')
 const [chat , ischat ] =  useState('')
 const [podcast , ispodcast ] =  useState('')
@@ -119,16 +119,57 @@ const options = Platform.select({
          LoadingSpin,
          {
            toValue : 1 , 
-           duration : 400 
+           duration : 400 ,
+           useNativeDriver: true 
          }
        )
      ]).start(()=> spinAnimation());
     } 
-
+    const api_ads = () => 
+    {
+     
+    fetch("http://demo.ezicodes.com:8080/images/ads.json")
+    .then(response => {
+        if (!response.ok) {    
+            throw new Error(                    
+                "HTTP status " + response.status 
+            );                               
+        }                  
+                           
+        return response.json(); 
+                        
+    })
+    .then(dataSource => {                       
+     
+      isdata_response(dataSource ) ;                      
+    
+      isimages([ dataSource[0].Image,  dataSource[1].Image
+        , dataSource[2].Image ]);
+      
+      //alert(dataSource[1].Image );
+      return data_response ;
+    })
+    .catch(error => {
+     /* ToastAndroid.showWithGravityAndOffset(
+        'something wrong !!' ,
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50,
+        );
+        */
+    });
+  }
 
   useEffect(() => {
-
+    api_ads();
     Orientation.lockToPortrait();
+    
+    setTimeout(function(){
+      setModalVisible(!modalVisible)
+      
+    }, 3000);
+    
     const s = new Sound( {uri : 'http://demo.ezicodes.com:8080/images/Img/OpeningInsertTEST.mp3' },
      (error) => { // works
       if (error) {
@@ -173,14 +214,7 @@ const options = Platform.select({
       default:
         break;
     }
-/*
-  <Animated.Image style = {{ width : 130 , height : 130  , marginLeft :  '5%' 
-  , transform : [{rotate : spin }]   }}
-    source = {require('../Img/disk.png')} 
-  />
-  
-        */
-        
+
         TrackPlayer.updateOptions({
         stopWithApp: false, 
         capabilities: [
@@ -203,7 +237,21 @@ const options = Platform.select({
           ischeck('control-pause');
           isoutputRange('360deg')
           TrackPlayer.addEventListener('remote-play', () => TrackPlayer.play());
-          TrackPlayer.addEventListener('remote-pause', () => TrackPlayer.pause());
+          
+          TrackPlayer.addEventListener('remote-pause', () => {
+            if(TrackPlayer.STATE_PAUSED)
+            {
+           //   alert(TrackPlayer.STATE_STOPPED);
+              ischeck('control-play');
+              isimg({ uri : 'http://demo.ezicodes.com:8080/images/Img/play-0%20static.png'})
+              iscd_height(140);
+              iscd_width(140);
+              ismargin_r('-5%')
+              TrackPlayer.pause();
+
+            }
+             
+          });
           TrackPlayer.addEventListener('remote-stop', () => {
             if(TrackPlayer.STATE_STOPPED)
             {
@@ -229,6 +277,35 @@ const options = Platform.select({
 
     return (
       <View style = {styles.screen}>
+ <Modal 
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+       
+      >
+        <View style={{flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: '-145%'  , marginLeft : '5%'}}>
+         <ImageBackground 
+          imageStyle={{ borderRadius: 10 , alignItems : 'center' , justifyContent : 'center' , 
+          shadowOffset: {
+            width: 0,
+            height: 2
+          },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.84,
+          elevation: 5}}
+          source={{ uri: 'http://demo.ezicodes.com:8080/images/Img/ads.png'}} 
+       style ={{ width : '85%' , height : 160 , alignItems : 'center' , marginLeft : '10%' ,
+        justifyContent : 'center'  }} >
+    </ImageBackground>
+    <Text style={{ color : 'white' , fontFamily : 'ArbFONTS-GE-SS-Two-Light'  ,
+     fontSize : 16 , marginTop : -25 }}>  أغنية جديدة </Text>
+      
+
+        </View>
+      </Modal> 
          
       <ImageBackground source={{ uri : 'http://demo.ezicodes.com:8080/images/Img/home.jpg'}} 
          style={{width: '100%', height : '100%'}}>  
@@ -238,20 +315,21 @@ const options = Platform.select({
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
     >
- 
  <View style = {{ marginTop : '40%' , justifyContent : 'center' , alignItems : 'center'}}>
+
  <Image source={img}  style ={{ width : 175 , height : 150 , marginLeft : '8%'}} />  
  
  <Text style = {{ color : Colors.white  , marginTop : '3%' , fontFamily : 'ArbFONTS-GE-SS-Two-Light' , 
   marginLeft : '5%'  , fontSize : 18 ,}}>Song Name </Text>  
  
- <View style = {{flexDirection : 'column' , justifyContent : 'center' , alignItems : 'center' }}>
+ <View style = {{ justifyContent : 'center' , alignItems : 'center' }}>
  
- <Image source={{ uri : 'http://demo.ezicodes.com:8080/images/Img/Cyrcel.png'}} 
-  style ={{ width : 70 , height : 70 , marginTop : '1%'}} />  
- 
+ <ImageBackground source={{ uri : 'http://demo.ezicodes.com:8080/images/Img/Cyrcel.png'}} 
+  style ={{ width : 70 , height : 70 , marginTop : '1%' , marginLeft : '1%'}} >
+    
+    
         <Icon name={check} type = "SimpleLineIcons" style={{color: Colors.white   
-      , fontSize : 30  , marginLeft : '1%', marginTop : '-15%'}}
+      , fontSize : 30  , marginTop : '25%', marginLeft : '30%'}}
       onPress = {()=> 
         {
           if (check === 'control-pause')
@@ -293,16 +371,59 @@ const options = Platform.select({
       }
       
         }}/> 
+    
+    </ImageBackground>  
+ 
      </View>
                  
               </View>     
-        
-        <View style={{ width : '100%' , marginTop : '10%' , height : '20%' }}>
+         {/*
+         const [image , isimages ] =  useState([{uri: ''},  
+{uri: ''}, 
+{uri: ''},])*/ }
+        <View style={{ width : '100%' , marginTop : '10%' , height : '18.5%' }}>
           
-          <SliderBox images={images} autoplay circleLoop backgroundColor = {'white'}
+          <SliderBox images={image}
+           autoplay circleLoop backgroundColor = {'white'}
        resizeMode={'cover'}
        sliderBoxHeight={'100%'}  dotColor={Colors.tapcolor}
        inactiveDotColor="white"
+       onCurrentImagePressed={index => {
+      //  alert(`image ${index} pressed`)
+              if( index === 0){
+                Linking.canOpenURL(data_response[0].Path).then(supported => {
+                  if (!supported) {
+                    alert('Can\'t handle url');
+                  } else {
+                    return Linking.openURL(data_response[0].Path);
+                  }
+                }).catch(err => console.error('An error occurred', err));
+                
+              }
+              else if (index === 1)
+              {
+                Linking.canOpenURL(data_response[1].Path).then(supported => {
+                  if (!supported) {
+                    alert('Can\'t handle url');
+                  } else {
+                    return Linking.openURL(data_response[1].Path);
+                  }
+                }).catch(err => console.error('An error occurred', err));
+                
+              }
+              else if (index === 2)
+              {
+                Linking.canOpenURL(data_response[2].Path).then(supported => {
+                  if (!supported) {
+                    alert('Can\'t handle url');
+                  } else {
+                    return Linking.openURL(data_response[2].Path);
+                  }
+                }).catch(err => console.error('An error occurred', err));
+                
+              }
+              
+       }}
        dotStyle={{
          width: 10,
          height: 10,
@@ -323,18 +444,11 @@ const options = Platform.select({
                          color: Colors.white , fontSize :  25 }} 
                          onPress={() => 
                          {
-                          navigation.openDrawer(navigation.navigate('Menu',
-                          {'param1': navigation.getParam( 'param1') , 
-                           'param2': navigation.getParam( 'param2') })
-                          )
-                          
+                          navigation.openDrawer();
                          }}/>
                         <Text style = {{color : Colors.white ,  fontFamily : 'ArbFONTS-GE-SS-Two-Light' }}  onPress={() => 
                          {
-                          //navigation.openDrawer()
-                          navigation.navigate('Menu',
-                          {'param1': navigation.getParam( 'param1') , 
-                           'param2': navigation.getParam( 'param2') });
+                          navigation.openDrawer()
                           
                          }}>{menu}</Text>
                       

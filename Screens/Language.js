@@ -63,16 +63,28 @@ render() {
         }}
         >
            <Text style = {{  alignSelf : "center" , color : Colors.white , fontSize : 25 , fontFamily : 'ArbFONTS-GE-SS-Two-Light'
+            }}
+            onPress = {()=>{
+              DialogProgress.show(options) ;
+    
+            this. props.navigation.navigate({ routeName : 'LoginScreen' , 
+            params : { 'param1' : 'param1' }});
+            DialogProgress.hide() 
             }}>عربــي</Text>
             </TouchableOpacity>
 
 
-            <TouchableOpacity style = {styles.button}>
+            <TouchableOpacity style = {styles.button} onPress = {()=>{
+              DialogProgress.show(options) ;
+
+              this.props.navigation.navigate({ routeName : 'LoginScreen' , 
+              params : { 'param2' : 'param2' }});
+              DialogProgress.hide();
+            }}>
            <Text style = {{  alignSelf : "center" , color : Colors.white , fontSize : 25 , fontFamily : 'ArbFONTS-GE-SS-Two-Light' }}
             onPress = {()=>{
               DialogProgress.show(options) ;
 
-              this.props.navigation.navigate( {routeName : 'RegisterScreen', params : { La : 'english' }});
               this.props.navigation.navigate({ routeName : 'LoginScreen' , 
               params : { 'param2' : 'param2' }});
               DialogProgress.hide();

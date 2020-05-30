@@ -1,3 +1,267 @@
+import React  , { Component} from 'react';
+import { StyleSheet,View,FlatList,  Text , ImageBackground  , ActivityIndicator , TextInput , ScrollView
+   , Alert , TouchableOpacity  , Image} from 'react-native';
+import Orientation from 'react-native-orientation-locker';
+import { Icon   } from 'native-base';
+import  Colors  from '../constant/color';
+
+
+const colors= [
+  'white'
+ ];
+ const icons = [
+   "hand-holding-heart" , "castle" , "leanpub"
+ ];
+ const iconsheader = [
+   "FontAwesome5" , "MaterialCommunityIcons" , "FontAwesome5"
+ ];
+ 
+  class Lirary extends Component 
+ {
+   constructor(props) {
+     super(props);
+
+     this.state = {
+       visible : true , header : '' , isLoading: true, text: '' , search : '', 
+         GridListItems: 
+         [
+           { key: "ث" },{ key: "ت" },{ key: "ب" },{ key: "أ" },
+           { key: "د" },{ key: "خ" },{ key: "ح" },{ key: "ج" },
+           { key: "س" },{ key: "ز" },{ key: "ر" },{ key: "ذ" },
+           { key: "ط" },{ key: "ض" },{ key: "ص" },{ key: "ش" },
+           { key: "ف" },{ key: "غ" },{ key: "ع" },{ key: "ظ" },
+           { key: "م" },{ key: "ل" },{ key: "ك" },{ key: "ق" },
+           ,{ key: "ي" },{ key: "و" },{ key: "ن" },
+           
+           
+         ]
+     
+     }
+     
+    }
+  componentDidMount()
+  {
+    Orientation.lockToPortrait();
+    
+  }
+ 
+   static navigationOptions = {header: null }
+   
+ 
+   
+ render()
+ { 
+    return (
+      this.state.isloading
+      ?
+      <View style={{ flex : 1 , alignItems : 'center' , justifyContent : 'center' , backgroundColor : 
+      Colors.tapcolor}}> 
+      <ActivityIndicator size = "large" animating  color = {Colors.white}/>
+      </View>
+      :
+
+<View>
+       <ImageBackground source={{ uri : 'http://demo.ezicodes.com:8080/images/Img/li.jpg' }} 
+          style={{width: '100%', height : '100%'}}>  
+     
+     <View style = {{ flexDirection : 'row' ,justifyContent : 'center' , marginLeft : '5%' ,
+     alignItems : 'center' , marginTop : '50%'}}>
+       <Text style = {{ alignSelf : "center" ,  alignItems : 'center' ,  justifyContent : 'center' ,
+       fontFamily : 'ArbFONTS-GE-SS-Two-Light',color : Colors.white , fontSize : 20 }}> 
+        Find Your Favourite Song... </Text>
+       
+       <Icon name= 'search' type ='EvilIcons'
+              style={{color: Colors.white , fontSize : 45,}}
+        onPress = {() => {
+
+          this.props.navigation.navigate('All_Music');
+        }}      
+              
+              />
+
+     </View>
+             <ScrollView style ={{   
+   marginTop : '43%' , width : '90%' , padding : 10 , borderRadius : 10 ,  
+   marginLeft : '5%' , marginRight : '5%' , }}>
+
+ <View style ={{ justifyContent : 'center', alignItems : 'center'}}>
+
+ 
+ <FlatList
+             data={ this.state.GridListItems }
+             renderItem={ ({item , index }) =>
+           
+             <TouchableOpacity 
+             onPress = {()=>{
+                 this.props.navigation.navigate('Songers');
+            }}>
+               <View style={{ backgroundColor: colors[index%colors.length] ,flex:1,borderRadius : 20 ,
+                   justifyContent: 'center',alignItems: 'center', width : 50,
+                   height : 50 ,margin: 8, }}>
+              
+              
+                <Text style={styles.GridViewTextLayout}> {item.key} </Text>
+              
+               </View> 
+               </TouchableOpacity>
+            
+               }
+             numColumns={4}
+
+/>  
+ </View>
+</ScrollView>
+
+ </ImageBackground>
+ 
+     </View>
+   );
+ 
+ }
+  
+ 
+ }
+ 
+ const styles = StyleSheet.create({
+ screen :
+ {
+ flex : 1 , justifyContent : 'center' ,alignItems : 'center'
+ } ,
+textStyle: {
+  padding: 10 
+},
+textInputStyle: {
+  height: 40, marginLeft : '15%' ,
+  borderRadius : 20 ,
+  borderWidth: .4,
+  color : Colors.white,
+  paddingLeft: 10,
+  borderColor: Colors.white,
+},
+ headerText: {
+   fontSize: 20,
+   textAlign: "center",
+   margin: 10,
+ },
+ GridViewTextLayout: {
+  fontSize: 20,
+  fontFamily : 'ArbFONTS-GE-SS-Two-Light',
+  justifyContent: 'center',
+  color: Colors.tapcolor,
+  padding: 10,
+ }
+ });
+ 
+ export default Lirary ;
+ /*
+
+import React  , { useEffect , useState } from 'react';
+import { StyleSheet,View , TouchableOpacity, TextInput,   Text , ImageBackground  , Image , ToastAndroid 
+  , ScrollView , FlatList , PermissionsAndroid } from 'react-native';
+import Orientation from 'react-native-orientation-locker';
+import Colors from '../constant/color'; 
+import { Icon } from 'native-base' ;
+
+ 
+  const Favourites = ({navigation}) =>
+{
+
+  const [ data  , isdata ] =  useState([{
+    title : '' , url : '' , artist : ''
+  }]);
+  const [header , isheader ] =  useState('');
+  const [check , ischeck ] =  useState('play');
+  const [text , istext ] =  useState('');
+  const [artist , isartist ] =  useState('');
+  const [url , isurl ] =  useState('');
+
+
+
+  Favourites.navigationOptions = navigationData =>
+      {
+        return { header: null };
+      }
+
+
+      useEffect(() => {
+
+Orientation.lockToPortrait();   
+   
+const  title = navigation.getParam('title');
+const  url = navigation.getParam('url');
+const  artist = navigation.getParam('artist');
+ 
+ isdata([ {
+   title : title , url : url ,artist : artist
+ }])
+   
+  }),[]; 
+
+      return (
+     <View style={styles.screen}>
+  <ScrollView> 
+      
+      <View style ={{  height : '100%' , padding : 5 , marginRight : '1%' , marginLeft : '1%',  marginBottom : '10%'}}>
+      
+               <FlatList  data={data}  keyExtractor={(item, index) => index.toString()}
+                          renderItem={({item , index }) =>  
+                          <TouchableOpacity 
+                          onPress = {()=>{
+                         // alert(item.title)                        
+                      
+                        }}
+                          >             
+                    <View>
+                                 
+                          <View style ={{ margin : 5 , height : 60 , flexDirection : 'row'}}>
+                                
+                         <Icon name="dot-single" type = "Entypo" style={{color: Colors.white , marginTop : '7%'   
+                       , fontSize : 30  , }}/>
+                         
+                         <View style={{ flexDirection : 'row'}}>
+                          <Text style={{ color : Colors.white  ,fontFamily : 'ArbFONTS-GE-SS-Two-Light',
+                           marginLeft : '5%', marginTop : '10%', width : 100 , height : 50 }}>
+                             {item.title}</Text>  
+                          
+                          <Text style={{ color : Colors.white  ,fontFamily : 'ArbFONTS-GE-SS-Two-Light',
+                           marginLeft : '5%', marginTop : '10%' , width : 100 , height : 50 ,  
+                           }}>{item.artist}</Text>  
+                       
+                         <Icon name="delete" type = "AntDesign" style={{color: Colors.white , marginTop : '10%'   
+                       , fontSize : 25  , marginLeft : '5%' }}
+                       onPress = {( )=>{
+                       
+                       }}/>
+                  
+                          </View>
+                      
+                             </View>
+                             <View style={{ width: '100%'  , height: .5 , 
+                      backgroundColor: Colors.white , marginTop: 20}} />
+                      
+                             </View>
+                             </TouchableOpacity> 
+                          }/>
+                      </View>
+      
+                          </ScrollView>
+                                 </View>
+      );
+
+    
+     
+ 
+  }
+
+const styles = StyleSheet.create({
+ screen :
+ {
+   flex : 1 , justifyContent : 'center' ,alignItems : 'center' , backgroundColor : Colors.tapcolor
+ } 
+
+});
+
+export default Favourites ;
 
 import React  , {  useEffect , useState  } from 'react';
 import { StyleSheet,View , TouchableOpacity, TextInput,   Text , ImageBackground  , Image , ToastAndroid 
@@ -45,7 +309,13 @@ const data =  [
 }
 ];  
    
+const [data_response , isdata_response ] =  useState('')
+const [image , isimages ] =  useState([{uri: ''},  
+{uri: ''}, 
+{uri: ''},])
 
+
+const [ arr  , isarr ] =  useState([]);
 const [header , isheader ] =  useState('');
 const [check , ischeck ] =  useState('play');
 const [text , istext ] =  useState('');
@@ -56,9 +326,43 @@ const [url , isurl ] =  useState('');
       {
         return { header: null };
       }
-     
+      const api_ads = () => 
+      {
+       
+      fetch("http://demo.ezicodes.com:8080/images/ads.json")
+      .then(response => {
+          if (!response.ok) {    
+              throw new Error(                    
+                  "HTTP status " + response.status 
+              );                               
+          }                  
+                             
+          return response.json(); 
+                          
+      })
+      .then(dataSource => {                       
+       
+        isdata_response(dataSource ) ;                      
+        isimages([{uri: data_response[0].Image},  
+        {uri: data_response[1].Image}, 
+        {uri: data_response[2].Image},]);
+        
+  //      alert(data_response[0].ID + data_response[0].Name);
+      })
+      .catch(error => {
+       /* ToastAndroid.showWithGravityAndOffset(
+          'something wrong !!' ,
+          ToastAndroid.LONG,
+          ToastAndroid.BOTTOM,
+          25,
+          50,
+          );
+          
+      });
+    }
+  
   useEffect(() => {
-
+    api_ads();
     Orientation.lockToPortrait();
     TrackPlayer.updateOptions({
       stopWithApp: false, 
@@ -210,9 +514,9 @@ const [url , isurl ] =  useState('');
                         TrackPlayer.addEventListener('remote-stop', () => {
                           if(TrackPlayer.STATE_STOPPED)
                           {
-                        
-                            ischeck('play');
                             TrackPlayer.stop();
+                            ischeck('play');
+                            
                             istext('');
                             isartist('');
                           }
@@ -242,8 +546,11 @@ const [url , isurl ] =  useState('');
                  
                    <Icon name="hearto" type = "AntDesign" style={{color: Colors.white , marginTop : '10%'   
                  , fontSize : 25  , marginLeft : '5%' }}
-                 onPress = {()=>{
-                  alert('Not worked yet')
+                 onPress = {( )=>{
+                   isarr(item.title)
+                   navigation.navigate('Favourites', {'title': item.title , 'url' : item.url ,
+                   'artist' : item.artist, 
+                  });
                  }}/>
                 
                 <Icon name="download" type = "AntDesign" style={{color: Colors.white , marginTop : '10%'   
@@ -267,7 +574,7 @@ const [url , isurl ] =  useState('');
                     </ScrollView>
                     <View style={{ width : '100%' , marginTop : '5%' , height : '10%' , marginBottom : '5%'}}>
           
-          <SliderBox images={images} autoplay circleLoop backgroundColor = {'white'}
+          <SliderBox images={image} autoplay circleLoop backgroundColor = {'white'}
        resizeMode={'cover'}
        sliderBoxHeight={'100%'}  dotColor={Colors.tapcolor}
        inactiveDotColor="white"
@@ -304,3 +611,4 @@ input: {
 });
 
 export default Library ;
+*/

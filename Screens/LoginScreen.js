@@ -29,7 +29,7 @@ let ar = '';
       
         super(props);
         this.state = {  email : '' , password : ''  , faceid : '' ,  selected: 1  , modalVisable : false ,
-        emailplaceholder : '' , lang : '' ,
+        emailplaceholder : '' , lang : '' ,gmail_place : '' ,
         passwordplaceholder : '' ,
         Sign_In : '' ,
         Sign_UpNow :  '' , email_valid : '' ,done : '' ,Something : '' ,
@@ -92,8 +92,8 @@ let ar = '';
         email_valid : 'الايميل موجود بالفعل ' ,Something : 'يوجد خطأ' ,
         email_require : 'الايميل مطلوب' ,email_correct : 'الايميل خطأ', 
         passwordrequire :  'الرقم السري مطلوب' ,
-        char : 'علي الاقل ستة أحرف ' , welcome : 'أهلا بك', forget : 'نسيان الرقم السري؟'
-
+        char : 'علي الاقل ستة أحرف ' , welcome : 'أهلا بك', forget : 'نسيان الرقم السري؟' ,
+        gmail_place : '80%'
         })
         ar = this.state.lang ;
          break;
@@ -101,7 +101,7 @@ let ar = '';
          case 'param2' :
       //    alert(item) 
          this.setState({
-            lang : 'GOTHIC' ,
+            lang : 'GOTHIC' ,gmail_place :'30%' ,
             emailplaceholder : 'Email' , gmail : 'Start with Google Gmail' ,
             passwordplaceholder : 'Password' ,
             Sign_In : 'Sign In' ,
@@ -506,21 +506,23 @@ render() {
 
 
       </View>
-
-      
-
+    
       <View style = {{ flexDirection : 'column' , alignItems : 'center' , justifyContent : 'center'}}>  
-      <TouchableOpacity style = {styles.button}
-         onPress = {()=>{
-          this.props.navigation.navigate('Listen', {'param1': this.props.navigation.getParam( 'param1') , 
-          'param2': this.props.navigation.getParam( 'param2')});
-         }}>
-         <Text style = {{  alignSelf : "center" , marginTop : '-10%' , marginBottom : "10%" ,  width : 230 , 
+      <TouchableOpacity style = {styles.button}>
+         <Text style = {{  alignSelf : "center" ,  alignItems : 'center' , marginRight : this.state.gmail_place , 
+         marginLeft : '50%'
+         , justifyContent : 'center' , marginBottom : "10%" ,  width : 230 , 
          fontFamily : 'ArbFONTS-GE-SS-Two-Light', 
-              color : Colors.white , fontSize : 16 }}> {this.state.gmail} </Text>
-          </TouchableOpacity>
-
-      <TouchableOpacity style = {styles.button}
+              color : Colors.white , fontSize : 18 }}
+              onPress = {()=>{
+                this.props.navigation.navigate('Listen', {'param1': this.props.navigation.getParam( 'param1') , 
+                'param2': this.props.navigation.getParam( 'param2')});
+               }}
+               > {this.state.gmail} </Text>
+          </TouchableOpacity> 
+      
+         
+         <TouchableOpacity style = {styles.button}
         onPress = {this.OnloginPress.bind(this)}
       >
          <Text style = {{  alignSelf : "center"  , width : 80 ,   fontFamily : 'ArbFONTS-GE-SS-Two-Light', 

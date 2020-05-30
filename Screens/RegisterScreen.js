@@ -90,12 +90,13 @@ switch ( param1 || param2 ) {
     {
       
         if (this.validation_check())
-        {
-          DialogProgress.show(options);
+        {DialogProgress.show(options);
           firebase.database().ref("USERS").orderByChild("email").equalTo(this.state.email)
           .once("value",snapshot => {
+            
             if (snapshot.exists()){
-             
+              DialogProgress.hide();
+
                 ToastAndroid.showWithGravityAndOffset(
                 this.state.email_valid,
                 ToastAndroid.SHORT,
@@ -103,8 +104,9 @@ switch ( param1 || param2 ) {
                 25,
                 50,
                 );
-
+               
             }
+
             else 
             {
 
@@ -128,7 +130,8 @@ switch ( param1 || param2 ) {
               50,
               );
              // alert("User" + user.uid);
-              this.props.navigation.navigate('LoginScreen');
+              this.props.navigation.navigate('LoginScreen', {'param1': this.props.navigation.getParam( 'param1') , 
+              'param2': this.props.navigation.getParam( 'param2')});
               DialogProgress.hide();
            //   firebase.auth().currentUser.sendEmailVerification();
             //  user.reload();

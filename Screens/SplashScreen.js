@@ -12,28 +12,13 @@ Sound.setCategory('Playback', true); // true = mixWithOthers
 {
   constructor(props) {
     super(props);
-    this.state = {isloading : true}
+   
     console.disableYellowBox = true;
-
-  
-  }
-
-  componentWillMount() 
-  {
     Orientation.lockToPortrait();
-    /*
-    const s = new Sound( t2, (error) => { // works
-      if (error) {
-        console.log('error', error);
-        return;
-      }
   
-      s.play(() => {
-        s.release()
-      });
-    });
-  */
   }
+
+  
 
   render()
   
