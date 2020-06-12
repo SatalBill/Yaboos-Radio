@@ -1,0 +1,15 @@
+rootProject.name = 'first_project'
+include ':react-native-audio-record'
+project(':react-native-audio-record').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-audio-record/android')
+include ':react-native-audiowaveform'
+project(':react-native-audiowaveform').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-audiowaveform/android')
+include ':react-native-audiowaveform'
+project(':react-native-audiowaveform').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-audiowaveform/android')
+include ':react-native-voice-recorder'
+project(':react-native-voice-recorder').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-voice-recorder/android')
+apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
+include ':react-native-fbsdk'
+project(':react-native-fbsdk').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-fbsdk/android')
+include ':react-native-google-signin', ':app'
+project(':react-native-google-signin').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-google-signin/android')
+include ':app'
