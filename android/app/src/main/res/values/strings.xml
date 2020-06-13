@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Yaboos FM</string>
+    <string name="facebook_app_id">220269542523439</string>
+    <string name="fb_login_protocol_scheme">fb220269542523439</string>
+</resources>

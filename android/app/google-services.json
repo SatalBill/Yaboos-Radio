@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "938103654268",
+    "firebase_url": "https://radio-c034d.firebaseio.com",
+    "project_id": "radio-c034d",
+    "storage_bucket": "radio-c034d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:938103654268:android:6fabad856b603f6f6146f9",
+        "android_client_info": {
+          "package_name": "com.first_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "938103654268-7imro7di9q98iriegie6b3c5asrcr9sj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.first_project",
+            "certificate_hash": "013c3cdbca2bde37924d40e8c12114d68505893e"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACfwCfpQpzlV0uhouSVWtioOd8C67d__U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
